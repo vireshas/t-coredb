@@ -7,7 +7,7 @@ Library which helps in reusing connection pools.
     
     import (
             "fmt"
-            "github.com/vireshas/coredb"
+            "github.com/vireshas/t-coredb"
     )
     
     func main() {
