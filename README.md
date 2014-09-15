@@ -3,11 +3,14 @@ coredb
 
 Library which helps in reusing connection pools.
 
+DB schema: https://gist.github.com/vireshas/5f6cc3662ba3e0d95d47  
+Redis value: https://gist.github.com/vireshas/a194abcd8cfbbb70fde5
+
     package main
     
     import (
             "fmt"
-            "github.com/vireshas/coredb"
+            "github.com/vireshas/t-coredb"
     )
     
     func main() {
