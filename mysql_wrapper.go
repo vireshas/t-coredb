@@ -11,7 +11,7 @@ func GetMysqlClient(hostPort string) *sql.DB {
 }
 
 func createMysqlPool(hostNPorts []string) interface{} {
-	db, err := sql.Open("mysql", "root:@tcp(localhost:3306)/bm")
+	db, err := sql.Open("mysql", hostNPorts[0])
 	if err != nil {
 		return nil
 	}
