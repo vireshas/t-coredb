@@ -11,14 +11,19 @@ Redis value: https://gist.github.com/vireshas/a194abcd8cfbbb70fde5
     import (
             "fmt"
             "github.com/vireshas/t-coredb"
+            "github.com/vireshas/t-settings"
     )
     
     func main() {
-            connection := db.GetRedisClient("localhost:6379")
+            settings.Configure()
+            params := settings.GetConfigsFor("redis", "r1")
+            connection := db.GetRedisClient(settings.ConstructRedisPath(params))
             value := connection.Get("key3")
             fmt.Println(value)
     
-            mysqldb := db.GetMysqlClient("localhost:3306")
+            params = settings.GetConfigsFor("mysql", "m1")
+            url := settings.ConstructMysqlPath(params)
+            mysqldb := db.GetMysqlClient(url)
             for i := 0; i < 10; i++ {
                     var msg string
                     err := mysqldb.QueryRow("SELECT value FROM bm WHERE id=?", i).Scan(&msg)
