@@ -2,10 +2,13 @@ package db
 
 import (
 	"github.com/vireshas/mantle"
+	"github.com/vireshas/t-settings"
 )
 
-func GetRedisClient(hostPort string) mantle.Mantle {
-	pool := PoolManager{}.GetConnection(createRedisPool, hostPort)
+func GetRedisClientFor(vertical string) mantle.Mantle {
+	configs := settings.GetConfigsFor("redis", vertical)
+	connectionUrl := settings.ConstructRedisPath(configs)
+	pool := PoolManager{}.GetConnection(createRedisPool, connectionUrl)
 	return pool.(*mantle.Orm).Get()
 }
 
