@@ -16,14 +16,11 @@ Redis value: https://gist.github.com/vireshas/a194abcd8cfbbb70fde5
     
     func main() {
             settings.Configure()
-            params := settings.GetConfigsFor("redis", "r1")
-            connection := db.GetRedisClient(settings.ConstructRedisPath(params))
+            connection := db.GetRedisClientFor("r1")
             value := connection.Get("key3")
             fmt.Println(value)
     
-            params = settings.GetConfigsFor("mysql", "m1")
-            url := settings.ConstructMysqlPath(params)
-            mysqldb := db.GetMysqlClient(url)
+            mysqldb := db.GetMysqlClientFor("m1")
             for i := 0; i < 10; i++ {
                     var msg string
                     err := mysqldb.QueryRow("SELECT value FROM bm WHERE id=?", i).Scan(&msg)
