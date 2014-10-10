@@ -1,8 +1,8 @@
 package db
 
 import (
-	"github.com/vireshas/mantle"
-	"github.com/vireshas/t-settings"
+	"github.com/goibibo/mantle"
+	"github.com/goibibo/t-settings"
 )
 
 func GetRedisClientFor(vertical string) mantle.Mantle {

@@ -3,7 +3,7 @@ package db
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/vireshas/t-settings"
+	"github.com/goibibo/t-settings"
 )
 
 func GetMysqlClientFor(vertical string) *sql.DB {
