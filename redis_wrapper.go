@@ -9,7 +9,7 @@ func GetRedisClientFor(vertical string) mantle.Mantle {
 	configs := settings.GetConfigsFor("redis", vertical)
 	connectionUrl := settings.ConstructRedisPath(configs)
 	pool := PoolManager{}.GetConnection(createRedisPool, connectionUrl)
-	return pool.(*mantle.Orm).Get()
+	return pool.(*mantle.Orm).New()
 }
 
 func createRedisPool(hostNPorts []string) interface{} {
