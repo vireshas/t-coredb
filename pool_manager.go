@@ -6,20 +6,29 @@ import (
 
 //let's protect concurrent access to the map
 var rwMutex sync.RWMutex
-var IpToPoolMap = make(map[string]interface{})
+var poolMap = make(map[string]interface{})
 
-type createPoolCallBack func(hostNPort []string, options map[string]string) interface{}
+type dbConfig map[string]string
+
+type createPoolCallBack func(configs dbConfig) interface{}
 type PoolManager struct{}
 
-func (m PoolManager) GetConnection(cb createPoolCallBack, hostNPort string, options map[string]string) interface{} {
+func createUniqKey(configs dbConfig) (key string) {
+	for _, value := range configs {
+		key += value
+	}
+	return
+}
+
+func (m PoolManager) GetConnection(cb createPoolCallBack, configs dbConfig) interface{} {
 	rwMutex.Lock()
 	defer rwMutex.Unlock()
 
-	pool, ok := IpToPoolMap[hostNPort]
+	key := createUniqKey(configs)
+	pool, ok := poolMap[key]
 	if !ok {
-		hostAndPort := []string{hostNPort}
-		pool = cb(hostAndPort, options)
-		IpToPoolMap[hostNPort] = pool
+		pool = cb(configs)
+		poolMap[key] = pool
 	}
 	return pool
 }
