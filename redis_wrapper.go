@@ -13,7 +13,7 @@ const (
 
 func GetRedisClientFor(vertical string) mantle.Mantle {
 	configs := settings.GetConfigsFor("redis", vertical)
-	pool := PoolManager{}.GetConnection(createRedisPool, configs)
+	pool := GetConnection(createRedisPool, configs)
 	return pool.(*mantle.Orm).New()
 }
 

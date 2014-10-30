@@ -8,7 +8,7 @@ import (
 
 func GetMysqlClientFor(vertical string) *sql.DB {
 	configs := settings.GetConfigsFor("mysql", vertical)
-	pool := PoolManager{}.GetConnection(createMysqlPool, configs)
+	pool := GetConnection(createMysqlPool, configs)
 	return pool.(*sql.DB)
 }
 
