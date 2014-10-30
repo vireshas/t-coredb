@@ -6,13 +6,18 @@ import (
 	"strconv"
 )
 
+const (
+	pool_size  = "10"
+	default_db = "0"
+)
+
 func GetRedisClientFor(vertical string) mantle.Mantle {
 	configs := settings.GetConfigsFor("redis", vertical)
 	pool := PoolManager{}.GetConnection(createRedisPool, configs)
 	return pool.(*mantle.Orm).New()
 }
 
-func foundOrDefault(configs dbConfig, key string, fallback string) string {
+func foundOrSetDefault(configs dbConfig, key string, fallback string) string {
 	value, ok := configs[key]
 	if !ok {
 		value = fallback
@@ -22,8 +27,8 @@ func foundOrDefault(configs dbConfig, key string, fallback string) string {
 
 func createRedisPool(configs dbConfig) interface{} {
 	connectionUrl := settings.ConstructRedisPath(configs)
-	db := foundOrDefault(configs, "db", "0")
-	capacity, _ := strconv.Atoi(foundOrDefault(configs, "pool_size", "10"))
+	db := foundOrSetDefault(configs, "db", default_db)
+	capacity, _ := strconv.Atoi(foundOrSetDefault(configs, "pool_size", pool_size))
 	options := map[string]string{"db": db}
 	pool := mantle.Orm{
 		Driver:       "redis",
