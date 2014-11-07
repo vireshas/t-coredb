@@ -19,6 +19,10 @@ Redis value: https://gist.github.com/vireshas/a194abcd8cfbbb70fde5
             connection := db.GetRedisClientFor("r1")
             value := connection.Get("key3")
             fmt.Println(value)
+
+	    redCli, err := db.PureRedisClientFor("r2")
+ 	    val, _ := redis.String(redCli.Do("get", "key"))
+	    fmt.Println("value", val)
     
             mysqldb := db.GetMysqlClientFor("m1")
             for i := 0; i < 10; i++ {
