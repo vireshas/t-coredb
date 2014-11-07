@@ -2,6 +2,7 @@ package db
 
 import (
 	"github.com/goibibo/mantle"
+	mRedis "github.com/goibibo/mantle/backends"
 	"github.com/goibibo/t-settings"
 	"strconv"
 )
@@ -11,10 +12,17 @@ const (
 	default_db = "0"
 )
 
-func GetRedisClientFor(vertical string) mantle.Mantle {
+func getPool(vertical string) interface{} {
 	configs := settings.GetConfigsFor("redis", vertical)
-	pool := GetConnection(createRedisPool, configs)
-	return pool.(*mantle.Orm).New()
+	return GetConnection(createRedisPool, configs)
+}
+
+func PureRedisClientFor(vertical string) (*mRedis.RedisConn, error) {
+	return getPool(vertical).(*mantle.Orm).GetRedisConn()
+}
+
+func GetRedisClientFor(vertical string) mantle.Mantle {
+	return getPool(vertical).(*mantle.Orm).New()
 }
 
 func foundOrSetDefault(configs dbConfig, key string, fallback string) string {
